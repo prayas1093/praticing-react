@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import './App.css';
+import styleClasses from './App.css';
 import Person from './Person/Person'
+import ErrorBoundry from './ErrorBoundry/ErrorBoundry'
   
 
 
@@ -73,16 +74,11 @@ class App extends Component {
   
   render () {
     
-    const style = {
-      backgroundColor: 'green',
-      color: 'white',
-      font: 'inherit',
-      border: '1px solid blue',
-      padding: '8px',
-      cursor: 'pointer'
-    }
-
+    
     let classes=[];
+    let btnClass='';
+
+
 
     if(this.state.persons.length<=2){
       classes.push('red');
@@ -97,18 +93,21 @@ class App extends Component {
         persons = (
           <div>
             {this.state.persons.map((p,index)=>{
-              return <Person deleteOnClickReference={()=>this.deletePersonHandler(index)} nameChangedHandlerReference={(event)=>this.nameChangedHandler(event,p.id)} 
-              name={p.name} age={p.age} key={p.id} ></Person>
+              return <ErrorBoundry key={p.id}>
+                <Person deleteOnClickReference={()=>this.deletePersonHandler(index)} nameChangedHandlerReference={(event)=>this.nameChangedHandler(event,p.id)} 
+                name={p.name} age={p.age} ></Person>
+              </ErrorBoundry>  
             })}
           </div> 
         );
-        style.backgroundColor = 'red';
+        btnClass=styleClasses.red;
     }
     return (
-      <div className="App">
+      
+      <div className={styleClasses.App}>
         <h1>Hi, I'm a React App created by Mr. Prayas Arora</h1>
         <p className={classes.join(' ')}>This is really working!</p>
-        <button onClick={this.togglePersonHandler} style={style} >Toggle Persons</button>
+        <button onClick={this.togglePersonHandler} className={btnClass } >Toggle Persons</button>
         {persons}
       </div>
     );
